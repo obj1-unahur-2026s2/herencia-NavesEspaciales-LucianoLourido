@@ -49,8 +49,12 @@ class Nave {
 
   method estaTranquila() = combustible >= 4000 and velocidad <= 12000
 
-  method recibirAmenaza() 
-  
+  method recibirAmenaza(){
+    self.escapar()
+    self.avisar()
+  } 
+  method escapar() 
+  method avisar()   
   method estaDeRelajo() = self.estaTranquila() and self.tienePocaActividad()
 
   method tienePocaActividad()  
@@ -70,8 +74,10 @@ class NaveBaliza inherits Nave{
     self.ponerseParaleloAlSol()  
   } 
   override method estaTranquila() =  super() and self.color() != "rojo"
-  override method recibirAmenaza(){
+  override method escapar(){
     self.irHaciaElSol()
+  }
+  override method avisar(){
     self.cambiarColorDeBaliza("rojo")
   }
   override method tienePocaActividad() = cantidadDeCambios == 0
@@ -101,8 +107,11 @@ class NavePasajero inherits Nave {
     self.cargarBebida(6)
     self.acercarseUnPocoAlSol()
   }
-  override method recibirAmenaza(){
+
+  override method escapar(){
     self.acelerar(self.velocidad())
+  }
+  override method avisar(){
     self.descargarBebida(2 * cantPasajeros)
     self.descargarComida(1 * cantPasajeros)
   }
@@ -148,9 +157,13 @@ class NaveDeCombate inherits Nave {
     self.emitioMensaje("Saliendo en mision")
   } 
   override method estaTranquila() =  super() and !self.misilesDesplegados()
-  override method recibirAmenaza(){
+  override method escapar(){
     self.acercarseUnPocoAlSol()
     self.acercarseUnPocoAlSol()
+    
+  }
+   override method avisar(){
+  
     self.emitioMensaje("Amenaza recibida")
   } 
    
@@ -168,7 +181,7 @@ class NaveHospital inherits NavePasajero {
   }
   method estaPreparado() = quirofano
   override method estaTranquila() =  super() and !self.estaPreparado()
-  override method recibirAmenaza() {
+  override method avisar() {
     super()
     self.quirofanoPreparado()}  
 }
@@ -176,9 +189,10 @@ class NaveHospital inherits NavePasajero {
 class NaveSigilosa inherits NaveDeCombate {
 
   override method estaTranquila() =  super() and self.estaVisible() 
-  override method recibirAmenaza(){
+  override method escapar(){
     super()
     self.desplegarMisiles() 
     self.ponerseInvisible()
   }
+  
 }
