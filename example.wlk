@@ -87,6 +87,7 @@ class NavePasajero inherits Nave {
   const cantPasajeros
   var comida = 0
   var bebida = 0
+  var racionDeComidaServida = 0
 
   method cantBebida() = bebida
   method cantComida() = comida
@@ -98,10 +99,12 @@ class NavePasajero inherits Nave {
   }
   method descargarComida(cantidad){
     comida -= cantidad
+    racionDeComidaServida += 1
   } 
   method descargarBebida(cantidad){
     bebida -= cantidad
   }
+  method racionDeComidaServida() = racionDeComidaServida 
   override method prepararViaje(){
     self.cargarComida(4)
     self.cargarBebida(6)
@@ -115,7 +118,7 @@ class NavePasajero inherits Nave {
     self.descargarBebida(2 * cantPasajeros)
     self.descargarComida(1 * cantPasajeros)
   }
-  override method tienePocaActividad() = self.cantComida() < 50
+  override method tienePocaActividad() = self.racionDeComidaServida() < 50
 }
 class NaveDeCombate inherits Nave {
   var visible = true
@@ -154,7 +157,7 @@ class NaveDeCombate inherits Nave {
     self.ponerseVisible()
     self.replegarMisiles()
     self.acelerar(15000)
-    self.emitioMensaje("Saliendo en mision")
+    self.emitirMensaje("Saliendo en mision")
   } 
   override method estaTranquila() =  super() and !self.misilesDesplegados()
   override method escapar(){
